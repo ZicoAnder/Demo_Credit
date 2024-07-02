@@ -1,0 +1,1 @@
+{"version":3,"file":"knexConfig.js","sourceRoot":"","sources":["../../src/database/knexConfig.ts"],"names":[],"mappings":";;;;;;AAAA,gDAAkC;AAElC,uDAA+B;AAC/B,0DAAoC;AAEpC,MAAM,YAAY,GAAgB,kBAAU,CAAC,gBAAM,CAAC,QAAQ,CAAC,CAAC;AAEjD,QAAA,EAAE,GAAG,IAAA,cAAI,EAAC,YAAY,CAAC,CAAC"}

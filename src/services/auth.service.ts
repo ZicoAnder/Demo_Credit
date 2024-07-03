@@ -12,16 +12,42 @@ import axios from 'axios';
 export class AuthService {
   private tableName = 'users';
 
-  private async isUserBlacklisted(userDetails: USER): Promise<boolean> {
+  private async isUserBlacklisted(email: string): Promise<boolean> {
     const apiURL = process.env.LENDSQR_API_URL || 'default_api_url'; // Placeholder URL
     const apiKey = process.env.LENDSQR_API_KEY || 'default_api_key';
     try {
-      const response = await axios.post(apiURL, userDetails, {
+      console.log('Checking blacklist status for email:', email);
+      console.log('Using API URL:', apiURL);
+      console.log('Using API Key:', apiKey);
+
+      const response = await axios.get(`${apiURL}verification/karma/${email}`,  {
         headers: { Authorization: `Bearer ${apiKey}` },
+        maxBodyLength: Infinity, // This matches the provided API doc
       });
       // Assuming the API returns { isBlacklisted: true/false }
-      return response.data.isBlacklisted;
-    } catch (error) {
+     //     return response.data.isBlacklisted;
+     //   } catch (error) {
+     //     console.error('Error checking blacklist status:', error);
+    //     throw new Error('Failed to check blacklist status');
+    //   }
+    // }
+    console.log('Response from karma check:', response.data);
+
+  const karmaData = response.data.data;
+
+      // Check if the karma identity or other conditions should blacklist the user
+      if (karmaData.karma_type.karma === 'Others') {
+        return true; // Assuming 'Others' means the user should be blacklisted
+      }
+
+      // Add more conditions as necessary based on the response data
+
+      return false;
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        console.warn('User not found in karma, not blacklisted:', email);
+        return false; // User not found, so not blacklisted
+      } 
       console.error('Error checking blacklist status:', error);
       throw new Error('Failed to check blacklist status');
     }
@@ -35,16 +61,17 @@ export class AuthService {
       return errorResponse(error.details[0].message, 400);
     }
 
-    // Check if the user is blacklisted before proceeding
-    const isBlacklisted = await this.isUserBlacklisted(body);
-    if (isBlacklisted) {
-      return errorResponse('User is blacklisted', 403); // Forbidden
-    }
-
+    
     const { firstName, lastName, email, password } = body;
 
     //make email lowercase
     const formattedEmail = this.formatEmail(email);
+
+    // Check if the user is blacklisted before proceeding
+    const isBlacklisted = await this.isUserBlacklisted(formattedEmail);
+    if (isBlacklisted) {
+      return errorResponse('User is blacklisted', 403); // Forbidden
+    }
 
     //check if email is already in use
     const isEmail = await this.findUserByEmail(formattedEmail);

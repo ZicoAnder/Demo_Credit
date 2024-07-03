@@ -9,7 +9,7 @@ const knexConfig: { [key: string]: Knex.Config } = {
   development: {
     client: 'mysql2',
     connection: {
-      host: process.env.DB_HOST,
+      host: process.env.DB_HOST || 'sql7.freemysqlhosting.net',
       database: process.env.DB_NAME,
       user: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
@@ -26,7 +26,7 @@ const knexConfig: { [key: string]: Knex.Config } = {
   production: {
     client: 'mysql2',
     connection: process.env.DATABASE_URL || {
-      host: process.env.DB_HOST,
+      host: process.env.DB_HOST || 'sql7.freemysqlhosting.net',
       database: process.env.DB_NAME,
       user: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,

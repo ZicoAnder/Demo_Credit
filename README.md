@@ -27,7 +27,7 @@ Democredit is a mobile lending app that requires wallet functionality. This is n
 
 ## Documentation
 
-Postman: [See documentation](https://documenter.getpostman.com/view/11724511/2s8ZDU64s2)
+Postman: [See documentation](https://documenter.getpostman.com/view/31928169/2sA3dxEriK)
 
 ## API Endpoints
 

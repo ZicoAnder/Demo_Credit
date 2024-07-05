@@ -24,16 +24,10 @@ export class AuthService {
         headers: { Authorization: `Bearer ${apiKey}` },
         maxBodyLength: Infinity, // This matches the provided API doc
       });
-      // Assuming the API returns { isBlacklisted: true/false }
-     //     return response.data.isBlacklisted;
-     //   } catch (error) {
-     //     console.error('Error checking blacklist status:', error);
-    //     throw new Error('Failed to check blacklist status');
-    //   }
-    // }
+      
     console.log('Response from karma check:', response.data);
 
-  const karmaData = response.data.data;
+    const karmaData = response.data.data;
 
       // Check if the karma identity or other conditions should blacklist the user
       if (karmaData.karma_type.karma === 'Others') {
